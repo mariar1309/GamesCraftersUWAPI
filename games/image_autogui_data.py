@@ -56,7 +56,7 @@ def get_0to10by1or2(variant_id):
                 "sounds": {"x": "general/slide.mp3"},
                 "animationType": "simpleSlides"
             }
-        }
+        } 
     }
 
 def get_1dchess(variant_id):
@@ -1412,6 +1412,49 @@ def get_quickcross(variant_id):
         }
     }
 
+def get_quixo(variant_id):
+    """
+    Each position (5x5 grid) has 5 sources, 4 arrows. The 'src' of each position is labeled 0-24. 
+    Each position has 4 more centers representing posible directions a square can move in (up, right, down, left).
+    AutoGUI has a feature that allows you the hide the imaginary centers (in our case the destination for our arrows) 
+    by assigning them indices greater than the length of the AutoGUI position string. 
+    For example, in our case the length of our board string is 25, 
+    and if we let all imaginary centers to range from index 25 - 124, 
+    they will not be displayed and used to map pieces in the AutoGUI position string. 
+    """
+
+    board_size = 25
+
+    up_centers = [[i, board_size + i] for i in range(board_size)]
+    right_centers = [[i, board_size * 2 + i] for i in range(board_size)]
+    down_centers = [[i, board_size * 3 + i] for i in range(board_size)]
+    left_centers = [[i, board_size * 4 + i] for i in range(board_size)]
+    centers = up_centers + right_centers + down_centers + left_centers
+    
+    # a more memory efficient but less readable approach
+    # centers = [[i, board_size * j + i] for j in range(5) for i in range(board_size)]
+    
+
+    return {
+        "defaultTheme": "regular",
+        "themes": {
+            "regular": {
+                "space": [5, 5],
+                "centers": centers,
+                "background": f"konane/grid{5}x{5}.svg",
+                "charImages": {
+                    "X": {"image": "ttt/x.svg", "scale": 1},
+                    "O": {"image": "ttt/o.svg", "scale": 1}
+                },
+                "arrowWidth": 0.075, #width in NuTTT, may need smaller
+                "sounds": {"x": "general/slide.mp3"},
+                "animationType": "simpleSlides"
+            }
+        }
+    }
+
+
+
 def get_rubikscube(variant_id):
     # Color Centers
     centers = [
@@ -1880,6 +1923,7 @@ image_autogui_data_funcs = {
     "ponghauki": get_ponghauki,
     "quickchess": get_quickchess,
     "quickcross": get_quickcross,
+    "quixo": get_quixo,
     "rubikscube": get_rubikscube,
     "rubiksmagic": get_rubiksmagic,
     "rushhour": get_rushhour,
