@@ -1425,11 +1425,18 @@ def get_quixo(variant_id):
 
     board_size = 25
 
-    up_centers = [[i, board_size + i] for i in range(board_size)]
-    right_centers = [[i, board_size * 2 + i] for i in range(board_size)]
-    down_centers = [[i, board_size * 3 + i] for i in range(board_size)]
-    left_centers = [[i, board_size * 4 + i] for i in range(board_size)]
-    centers = up_centers + right_centers + down_centers + left_centers
+    # up_centers = [[i, board_size + i] for i in range(board_size)]
+    # right_centers = [[i, board_size * 2 + i] for i in range(board_size)]
+    # down_centers = [[i, board_size * 3 + i] for i in range(board_size)]
+    # left_centers = [[i, board_size * 4 + i] for i in range(board_size)]
+    # centers = up_centers + right_centers + down_centers + left_centers
+
+    src_centers = [[i, j] for i in range(2, 21, 4) for j in range(2, 21, 4)]
+    up_centers = [[i - 1, j] for i, j in src_centers]
+    right_centers = [[i, j + 1] for i, j in src_centers]
+    down_centers = [[i + 1, j] for i, j in src_centers]
+    left_centers = [[i, j - 1] for i, j in src_centers]
+    centers =src_centers + up_centers + right_centers + down_centers + left_centers
     
     # a more memory efficient but less readable approach
     # centers = [[i, board_size * j + i] for j in range(5) for i in range(board_size)]
@@ -1439,7 +1446,7 @@ def get_quixo(variant_id):
         "defaultTheme": "regular",
         "themes": {
             "regular": {
-                "space": [5, 5],
+                "space": [20, 20],
                 "centers": centers,
                 "background": f"konane/grid{5}x{5}.svg",
                 "charImages": {
